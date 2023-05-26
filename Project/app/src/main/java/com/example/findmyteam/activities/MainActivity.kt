@@ -1,4 +1,4 @@
-package com.example.findmyteam
+package com.example.findmyteam.activities
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.example.findmyteam.R
 import com.example.findmyteam.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
