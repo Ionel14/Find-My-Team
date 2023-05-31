@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.findmyteam.helpers.VolleyConfigSingleton;
@@ -21,23 +22,21 @@ import org.json.JSONObject;
 import java.util.concurrent.CompletableFuture;
 
 public class UsersManagement {
-    private CompletableFuture<User> findUser(Context context, String email) {
+    public static CompletableFuture<User> findUser(Context context, String email) {
         CompletableFuture<User> completableFuture = new CompletableFuture<>();
 
         VolleyConfigSingleton volleyConfigSingleton = VolleyConfigSingleton.getInstance(context);
         RequestQueue queue = volleyConfigSingleton.getRequestQueue();
         String url = BASE_URL + USERS_ENDPOINT;
 
-        JsonObjectRequest getUsersRequest = new JsonObjectRequest(
+        JsonArrayRequest getUsersRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
                 response -> {
                     try {
-                        JSONArray usersArray = response.getJSONArray("users");
-
-                        for (int i = 0; i < usersArray.length(); i++) {
-                            JSONObject userObj = usersArray.getJSONObject(i);
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject userObj = response.getJSONObject(i);
 
                             String emailU = userObj.getString("email");
                             if (emailU.equals(email)) {
