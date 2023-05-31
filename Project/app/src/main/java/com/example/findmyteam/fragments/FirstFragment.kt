@@ -1,12 +1,15 @@
 package com.example.findmyteam.fragments
 
 import android.R.attr.password
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
 import com.example.findmyteam.data.UsersManagement.findUser
 import com.example.findmyteam.helpers.OnItemClickListener
@@ -40,6 +43,10 @@ class FirstFragment : Fragment(), OnItemClickListener {
         val addButton = view.findViewById<Button>(R.id.login_button)
         addButton.setOnClickListener {
             onClick(it, 0)
+        }
+        val toRegister=view.findViewById<TextView>(R.id.to_register)
+        toRegister.setOnClickListener {findNavController().navigate(R.id.SecondFragment)
+
         }
 
     }
