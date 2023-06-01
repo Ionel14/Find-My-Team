@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.concurrent.CompletableFuture;
 
 public class UsersManagement {
+
     public static CompletableFuture<User> findUser(Context context, String email) {
         CompletableFuture<User> completableFuture = new CompletableFuture<>();
 
@@ -41,7 +42,9 @@ public class UsersManagement {
                             String emailU = userObj.getString("email");
                             if (emailU.equals(email)) {
                                 String password = userObj.getString("password");
-                                User currentUser = new User(email, password);
+                                String firstname = userObj.getString("firstname");
+                                String lastname = userObj.getString("lastname");
+                                User currentUser = new User(email, password, firstname, lastname);
                                 completableFuture.complete(currentUser);
                                 return; // Exit the loop and function since user is found
                             }
@@ -66,6 +69,43 @@ public class UsersManagement {
 
         return completableFuture;
     }
+
+    public static CompletableFuture<User> createUser(Context context, User user) {
+        CompletableFuture<User> completableFuture = new CompletableFuture<>();
+
+        VolleyConfigSingleton volleyConfigSingleton = VolleyConfigSingleton.getInstance(context);
+        RequestQueue queue = volleyConfigSingleton.getRequestQueue();
+        String url = BASE_URL + USERS_ENDPOINT;
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("email", user.getEmail());
+            jsonBody.put("password", user.getPassword());
+            jsonBody.put("firstname", user.getFirstname());
+            jsonBody.put("lastname", user.getLastname());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            completableFuture.completeExceptionally(e);
+            return completableFuture;
+        }
+
+        JsonObjectRequest createUserRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                jsonBody,
+                response -> {
+                    completableFuture.complete(null);
+                },
+                error -> {
+                    completableFuture.completeExceptionally(error);
+                }
+        );
+
+        queue.add(createUserRequest);
+
+        return completableFuture;
+    }
+
 
 
 }

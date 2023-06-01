@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
 import com.example.findmyteam.data.UsersManagement.findUser
 import com.example.findmyteam.helpers.OnItemClickListener
+import com.example.findmyteam.helpers.logInChecks
 import com.example.findmyteam.helpers.showInvalidDialog
 import com.example.findmyteam.models.User
 import com.google.android.material.textfield.TextInputEditText
@@ -58,18 +59,8 @@ class FirstFragment : Fragment(), OnItemClickListener {
 
     override fun onClick(view: View?, position: Int) {
 
-        if (emailEditText.text.isNullOrEmpty())
-        {
-            showInvalidDialog( "Email Field is empty","Please enter the email", requireContext());
-        }
-        else if (!emailEditText.text!!.contains('@'))
-        {
-            showInvalidDialog( "This is not a valid email","Please enter a valid email", requireContext());
-        }
-        else if (passwordEditText.text.isNullOrEmpty())
-        {
-            showInvalidDialog( "Password Field is empty","Please enter the password", requireContext());
-        }
+        if (logInChecks(requireContext(), emailEditText.text.toString(), passwordEditText.text.toString()))
+        {}
         else if (currentUser != null && currentUser!!.email == emailEditText.toString())
         {
             if (currentUser!!.password == passwordEditText.text.toString())
