@@ -59,7 +59,7 @@ class FirstFragment : Fragment(), OnItemClickListener {
 
     override fun onClick(view: View?, position: Int) {
 
-        if (logInChecks(requireContext(), emailEditText.text.toString(), passwordEditText.text.toString()))
+        if (!logInChecks(requireContext(), emailEditText.text.toString(), passwordEditText.text.toString()))
         {}
         else if (currentUser != null && currentUser!!.email == emailEditText.toString())
         {

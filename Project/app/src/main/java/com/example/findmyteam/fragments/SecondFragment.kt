@@ -67,6 +67,7 @@ class SecondFragment : Fragment(), OnItemClickListener {
                 if (!found)
                 {
                     val userFuture: CompletableFuture<User> = createUser(context, User(
+                        id = "0",
                         email = emailEditText.text.toString(),
                         password =  passwordEditText.text.toString(),
                         firstname = firstnameEditText.text.toString(),
@@ -74,6 +75,7 @@ class SecondFragment : Fragment(), OnItemClickListener {
                     ));
 
                     userFuture.thenAccept {
+
                         showInvalidDialog( "OK","Signed in", requireContext());
                     }.exceptionally { ex ->
                         // Error handling logic

@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class UsersManagement {
 
+    public static User currentUser;
     public static CompletableFuture<User> findUser(Context context, String email) {
         CompletableFuture<User> completableFuture = new CompletableFuture<>();
 
@@ -41,11 +42,13 @@ public class UsersManagement {
 
                             String emailU = userObj.getString("email");
                             if (emailU.equals(email)) {
+                                String id = userObj.getString("id");
                                 String password = userObj.getString("password");
                                 String firstname = userObj.getString("firstname");
                                 String lastname = userObj.getString("lastname");
-                                User currentUser = new User(email, password, firstname, lastname);
-                                completableFuture.complete(currentUser);
+                                User user = new User(id, email, password, firstname, lastname);
+                                currentUser = user;
+                                completableFuture.complete(user);
                                 return; // Exit the loop and function since user is found
                             }
                         }
@@ -94,7 +97,13 @@ public class UsersManagement {
                 url,
                 jsonBody,
                 response -> {
-                    completableFuture.complete(null);
+                    try {
+                        user.setId(response.get("id").toString());
+                        currentUser = user;
+                        completableFuture.complete(null);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 },
                 error -> {
                     completableFuture.completeExceptionally(error);

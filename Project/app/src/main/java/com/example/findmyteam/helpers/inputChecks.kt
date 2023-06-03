@@ -6,6 +6,7 @@ import com.example.findmyteam.models.User
 import java.util.concurrent.CompletableFuture
 
 fun logInChecks(context: Context, email:String, password:String): Boolean {
+
     if (email.isNullOrEmpty())
     {
         showInvalidDialog( "Email Field is empty","Please enter the email", context)
