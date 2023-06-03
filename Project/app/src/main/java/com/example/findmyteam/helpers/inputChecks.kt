@@ -29,27 +29,26 @@ fun logInChecks(context: Context, email:String, password:String): Boolean {
     return true
 }
 
+fun existentUserCheck(context: Context, email: String, callback: (Boolean) -> Unit) {
+    val userFuture: CompletableFuture<User> = UsersManagement.findUser(context, email)
+
+    userFuture.thenAccept { user ->
+        if (user != null) {
+            showInvalidDialog("This email is already used", "Please enter another email", context)
+            callback(true)
+        } else {
+            callback(false)
+        }
+    }.exceptionally { ex ->
+        // Error handling logic
+        println("An error occurred: ${ex.message}")
+        callback(false)
+        null
+    }
+}
+
+
 fun signInChecks(context: Context, email:String, password:String, firstname: String, lastname: String): Boolean {
-//    val userFuture: CompletableFuture<User> =
-//        UsersManagement.findUser(context, email)
-//
-//    var isNull = true
-//
-//    userFuture.thenAccept { user ->
-//        if (user != null) {
-//            showInvalidDialog( "This email is already used","Please enter other email", context)
-//            return@thenAccept;
-//        }
-//    }.exceptionally { ex ->
-//        // Error handling logic
-//        println("An error occurred: " + ex.message)
-//        null
-//    }
-//
-//    if (!isNull)
-//    {
-//        return false
-//    }
 
     if (!logInChecks(context, email, password))
     {
