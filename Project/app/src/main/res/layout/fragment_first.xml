@@ -72,7 +72,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="90dp"
         android:text="Don't you have an account.Create one"
-        android:textColor="@color/dark_green"
+        android:textColor="@drawable/i_dont_have_an_account_behaviour"
         android:fontFamily="@font/soccerleague"
         android:textSize="20sp"
         />
