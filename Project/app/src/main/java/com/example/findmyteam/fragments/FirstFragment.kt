@@ -11,10 +11,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
+import com.example.findmyteam.data.AnnouncementsManagement.getAnnouncements
 import com.example.findmyteam.data.UsersManagement.findUser
 import com.example.findmyteam.helpers.OnItemClickListener
 import com.example.findmyteam.helpers.logInChecks
 import com.example.findmyteam.helpers.showInvalidDialog
+import com.example.findmyteam.models.Announcement
 import com.example.findmyteam.models.User
 import com.google.android.material.textfield.TextInputEditText
 import java.util.concurrent.CompletableFuture
