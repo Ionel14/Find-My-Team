@@ -2,20 +2,16 @@ package com.example.findmyteam.data;
 
 import static com.example.findmyteam.helpers.Constants.BASE_URL;
 import static com.example.findmyteam.helpers.Constants.USERS_ENDPOINT;
-import static java.security.AccessController.getContext;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.findmyteam.helpers.VolleyConfigSingleton;
 import com.example.findmyteam.models.User;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,9 +101,7 @@ public class UsersManagement {
                         throw new RuntimeException(e);
                     }
                 },
-                error -> {
-                    completableFuture.completeExceptionally(error);
-                }
+                completableFuture::completeExceptionally
         );
 
         queue.add(createUserRequest);
