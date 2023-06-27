@@ -23,7 +23,7 @@
         <com.google.android.material.imageview.ShapeableImageView
           app:shapeAppearance="@style/circleImageView"
             android:id="@+id/user_image"
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:src="@drawable/gigachad"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to favorite"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:fontFamily="@font/soccerleague"
         android:layout_marginStart="20dp"
         android:layout_alignParentRight="true"

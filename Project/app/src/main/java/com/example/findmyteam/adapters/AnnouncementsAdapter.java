@@ -65,6 +65,7 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView categoryTextView;
         TextView cityTextView;
         androidx.appcompat.widget.AppCompatButton favoriteButton;
+        androidx.appcompat.widget.AppCompatButton moreInfo;
 
         public AnnouncementViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,7 +75,10 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.View
             cityTextView = itemView.findViewById(R.id.city);
 
             favoriteButton = itemView.findViewById(R.id.add_to_favorite);
+            moreInfo = itemView.findViewById(R.id.announcement_details);
+
             favoriteButton.setOnClickListener(this);
+            moreInfo.setOnClickListener(this);
         }
 
         public void bind(Announcement announcement) {
