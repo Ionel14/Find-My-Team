@@ -65,19 +65,7 @@ public class AnnouncementsManagement {
 
         return completableFuture;
 
-//        val announcementsFuture: CompletableFuture<List<Announcement>> = getAnnouncements(context);
-//
-//        announcementsFuture.thenAccept { announcements ->
-//            if (announcements != null) {
-//                //some code
-//            } else {
-//                showInvalidDialog( "No Announcements","", requireContext());
-//            }
-//        }.exceptionally { ex ->
-//                // Error handling logic
-//                println("An error occurred: " + ex.message)
-//            null
-//        }
+
     }
 
     public static CompletableFuture<Announcement> addAnnouncement(Context context, Announcement announcement) {

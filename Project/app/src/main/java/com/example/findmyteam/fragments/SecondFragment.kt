@@ -1,13 +1,15 @@
 package com.example.findmyteam.fragments
 
-import android.R.attr.password
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
+import com.example.findmyteam.activities.AppMain
 import com.example.findmyteam.data.UsersManagement.createUser
 import com.example.findmyteam.helpers.OnItemClickListener
 import com.example.findmyteam.helpers.existentUserCheck
@@ -47,11 +49,6 @@ class SecondFragment : Fragment(), OnItemClickListener {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-    }
-
     override fun onClick(view: View?, position: Int) {
 
         if (!signInChecks(requireContext(),
@@ -60,7 +57,7 @@ class SecondFragment : Fragment(), OnItemClickListener {
                 firstnameEditText.text.toString(),
                 lastnameEditText.text.toString()))
         {
-            return;
+            return
         }
         else{
             existentUserCheck(requireContext(), emailEditText.text.toString()){found ->
@@ -72,11 +69,11 @@ class SecondFragment : Fragment(), OnItemClickListener {
                         password =  passwordEditText.text.toString(),
                         firstname = firstnameEditText.text.toString(),
                         lastname = lastnameEditText.text.toString()
-                    ));
+                    ))
 
                     userFuture.thenAccept {
 
-                        showInvalidDialog( "OK","Signed in", requireContext());
+                        openMainActivity()
                     }.exceptionally { ex ->
                         // Error handling logic
                         println("An error occurred: " + ex.message)
@@ -85,5 +82,11 @@ class SecondFragment : Fragment(), OnItemClickListener {
                 }
             }
         }
+    }
+
+    private fun openMainActivity()
+    {
+        val intent = Intent(requireContext(), AppMain::class.java)
+        startActivity(intent)
     }
 }

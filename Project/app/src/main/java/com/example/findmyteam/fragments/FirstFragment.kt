@@ -1,6 +1,5 @@
 package com.example.findmyteam.fragments
 
-import android.R.attr.password
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +10,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
-import com.example.findmyteam.data.AnnouncementsManagement.getAnnouncements
+import com.example.findmyteam.activities.AppMain
+import com.example.findmyteam.activities.MainActivity
 import com.example.findmyteam.data.UsersManagement.findUser
 import com.example.findmyteam.helpers.OnItemClickListener
 import com.example.findmyteam.helpers.logInChecks
 import com.example.findmyteam.helpers.showInvalidDialog
-import com.example.findmyteam.models.Announcement
 import com.example.findmyteam.models.User
 import com.google.android.material.textfield.TextInputEditText
 import java.util.concurrent.CompletableFuture
@@ -83,7 +82,7 @@ class FirstFragment : Fragment(), OnItemClickListener {
                     if (user.password == passwordEditText.text.toString())
                     {
                         //Go to next page
-                        showInvalidDialog( "OK","Logged in", requireContext());
+                        openMainActivity()
                     }
                     else
                     {
@@ -101,5 +100,11 @@ class FirstFragment : Fragment(), OnItemClickListener {
             }
 
         }
+    }
+
+    private fun openMainActivity()
+    {
+        val intent = Intent(requireContext(), AppMain::class.java)
+        startActivity(intent)
     }
 }

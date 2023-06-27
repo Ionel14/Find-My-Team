@@ -1,11 +1,10 @@
 package com.example.findmyteam.activities
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.example.findmyteam.R
 import com.example.findmyteam.databinding.ActivityMainBinding
 
@@ -20,9 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        findNavController(R.id.nav_host_fragment_content_main)
 
 
     }
