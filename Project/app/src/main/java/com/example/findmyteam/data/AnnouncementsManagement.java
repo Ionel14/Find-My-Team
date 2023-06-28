@@ -21,6 +21,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class AnnouncementsManagement {
 
+    public static List<Announcement> allAnnouncements;
     public static CompletableFuture<List<Announcement>> getAnnouncements(Context context) {
         CompletableFuture<List<Announcement>> completableFuture = new CompletableFuture<>();
 
@@ -47,6 +48,7 @@ public class AnnouncementsManagement {
                                 announcements.add(new Announcement(id, title, categoryId, locationId, description, ownerId));
                         }
 
+                        allAnnouncements = announcements;
                         completableFuture.complete(announcements);
                     } catch (JSONException e) {
                         e.printStackTrace();

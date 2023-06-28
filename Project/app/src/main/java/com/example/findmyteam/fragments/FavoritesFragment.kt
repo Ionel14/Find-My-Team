@@ -13,51 +13,32 @@ import com.example.findmyteam.R
 import com.example.findmyteam.adapters.AnnouncementsAdapter
 import com.example.findmyteam.data.AnnouncementsManagement
 import com.example.findmyteam.helpers.OnItemClickListener
-import com.example.findmyteam.helpers.showInvalidDialog
 import com.example.findmyteam.models.Announcement
-import com.example.findmyteam.models.Cities.Companion.fromNumber
+import com.example.findmyteam.models.Cities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.CompletableFuture
 
-class MainFragment : Fragment(), OnItemClickListener {
-    var announcements = ArrayList<Announcement>()
+class FavoritesFragment : Fragment(), OnItemClickListener {
+
     private lateinit var adapter: AnnouncementsAdapter
+    var announcements = ArrayList<Announcement>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //val recycleView = view.findViewById<RecyclerView>(R.id.rv_announcements)
+        val sharedPreferences = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE)
 
-        runBlocking {
-            launch(Dispatchers.IO) {
-
-                val announcementsFuture: CompletableFuture<List<Announcement>> = AnnouncementsManagement.getAnnouncements(context);
-
-                announcementsFuture.thenAccept { pAnnouncements ->
-                    if (pAnnouncements != null) {
-                        announcements = pAnnouncements as ArrayList<Announcement>
-                        setAdapter()
-                    } else {
-                        showInvalidDialog( "No Announcements","", requireContext());
-                    }
-                }.exceptionally { ex ->
-                    // Error handling logic
-                    println("An error occurred: " + ex.message)
-                    null
-                }
-            }
-        }
-
+        announcements = AnnouncementsManagement.allAnnouncements.filter { announcement -> sharedPreferences.contains(announcement.id) } as ArrayList<Announcement>
+        setAdapter()
     }
 
     private fun setAdapter(){
@@ -76,19 +57,12 @@ class MainFragment : Fragment(), OnItemClickListener {
         }
     }
 
-    private fun addAnnouncementToSharedPreferences(id: String) {
+    private fun deleteAnnouncementFromSharedPreferences(id: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val sharedPreferences = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
 
-            if (!sharedPreferences.contains(id))
-            {
-                editor.putString(id, id)
-            }
-            else
-            {
-                editor.remove(id)
-            }
+            editor.remove(id)
             editor.apply()
         }
 
@@ -97,20 +71,20 @@ class MainFragment : Fragment(), OnItemClickListener {
         val announcement = announcements[position]
         when(view?.id){
             R.id.add_to_favorite -> {
-                addAnnouncementToSharedPreferences(announcement.id)
+                deleteAnnouncementFromSharedPreferences(announcement.id)
+                announcements.remove(announcement)
+                adapter.notifyItemRemoved(position)
             }
             R.id.announcement_details -> {
                 val args = Bundle()
 
                 args.putString("title", announcement.title)
                 args.putString("description", announcement.description)
-                args.putString("location", fromNumber(announcement.locationId.toInt()).toString())
+                args.putString("location", Cities.fromNumber(announcement.locationId.toInt()).toString())
                 args.putString("ownerName", "Giany")
 
-
-                findNavController().navigate(R.id.action_mainFragment_to_moreInfoFragment, args)
+                findNavController().navigate(R.id.action_favoritesFragment_to_moreInfoFragment, args)
             }
         }
     }
-
 }

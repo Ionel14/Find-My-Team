@@ -13,10 +13,32 @@
         <action
             android:id="@+id/action_mainFragment_to_moreInfoFragment"
             app:destination="@id/moreInfoFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/moreInfoFragment"
         android:name="com.example.findmyteam.fragments.MoreInfoFragment"
         android:label="fragment_more_info"
-        tools:layout="@layout/fragment_more_info" />
+        tools:layout="@layout/fragment_more_info" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.findmyteam.fragments.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" >
+
+        <action
+            android:id="@+id/action_accountFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.findmyteam.fragments.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_moreInfoFragment"
+            app:destination="@id/moreInfoFragment" />
+    </fragment>
 </navigation>

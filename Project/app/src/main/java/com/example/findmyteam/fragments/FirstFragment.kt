@@ -18,6 +18,9 @@ import com.example.findmyteam.helpers.logInChecks
 import com.example.findmyteam.helpers.showInvalidDialog
 import com.example.findmyteam.models.User
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.CompletableFuture
 
 
@@ -75,7 +78,11 @@ class FirstFragment : Fragment(), OnItemClickListener {
             }
         }
         else{
-            val userFuture: CompletableFuture<User> = findUser(context, emailEditText.text.toString())
+            runBlocking {
+                launch(Dispatchers.IO) {
+
+                    val userFuture: CompletableFuture<User> =
+                        findUser(context, emailEditText.text.toString())
 
             userFuture.thenAccept { user ->
                 if (user != null) {
@@ -98,7 +105,8 @@ class FirstFragment : Fragment(), OnItemClickListener {
                 println("An error occurred: " + ex.message)
                 null
             }
-
+                }
+            }
         }
     }
 

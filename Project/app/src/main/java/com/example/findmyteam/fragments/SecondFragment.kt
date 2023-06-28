@@ -17,6 +17,9 @@ import com.example.findmyteam.helpers.showInvalidDialog
 import com.example.findmyteam.helpers.signInChecks
 import com.example.findmyteam.models.User
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.CompletableFuture
 
 
@@ -60,24 +63,30 @@ class SecondFragment : Fragment(), OnItemClickListener {
             return
         }
         else{
-            existentUserCheck(requireContext(), emailEditText.text.toString()){found ->
-                if (!found)
-                {
-                    val userFuture: CompletableFuture<User> = createUser(context, User(
-                        id = "0",
-                        email = emailEditText.text.toString(),
-                        password =  passwordEditText.text.toString(),
-                        firstname = firstnameEditText.text.toString(),
-                        lastname = lastnameEditText.text.toString()
-                    ))
+            runBlocking {
+                launch(Dispatchers.IO) {
 
-                    userFuture.thenAccept {
+                    existentUserCheck(requireContext(), emailEditText.text.toString()) { found ->
+                        if (!found) {
+                            val userFuture: CompletableFuture<User> = createUser(
+                                context, User(
+                                    id = "0",
+                                    email = emailEditText.text.toString(),
+                                    password = passwordEditText.text.toString(),
+                                    firstname = firstnameEditText.text.toString(),
+                                    lastname = lastnameEditText.text.toString()
+                                )
+                            )
 
-                        openMainActivity()
-                    }.exceptionally { ex ->
-                        // Error handling logic
-                        println("An error occurred: " + ex.message)
-                        null
+                            userFuture.thenAccept {
+
+                                openMainActivity()
+                            }.exceptionally { ex ->
+                                // Error handling logic
+                                println("An error occurred: " + ex.message)
+                                null
+                            }
+                        }
                     }
                 }
             }

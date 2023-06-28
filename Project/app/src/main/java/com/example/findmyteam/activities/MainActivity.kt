@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         findNavController(R.id.nav_host_fragment_content_main)
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
