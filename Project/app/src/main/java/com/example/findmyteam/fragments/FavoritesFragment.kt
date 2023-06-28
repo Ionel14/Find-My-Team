@@ -6,23 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.findmyteam.R
 import com.example.findmyteam.adapters.AnnouncementsAdapter
 import com.example.findmyteam.data.AnnouncementsManagement
+import com.example.findmyteam.data.UsersManagement
 import com.example.findmyteam.helpers.OnItemClickListener
+import com.example.findmyteam.helpers.UsersListener
 import com.example.findmyteam.models.Announcement
 import com.example.findmyteam.models.Cities
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.findmyteam.models.User
+import com.example.findmyteam.user.UserDataBase
+import com.example.findmyteam.user.UserDb
+import kotlinx.coroutines.*
+import java.util.concurrent.CompletableFuture
 
 class FavoritesFragment : Fragment(), OnItemClickListener {
 
     private lateinit var adapter: AnnouncementsAdapter
-    var announcements = ArrayList<Announcement>()
+    private var announcements = ArrayList<Announcement>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,15 +80,70 @@ class FavoritesFragment : Fragment(), OnItemClickListener {
                 announcements.remove(announcement)
                 adapter.notifyItemRemoved(position)
             }
-            R.id.announcement_details -> {
-                val args = Bundle()
 
+            R.id.announcement_details -> {
+
+
+                val args = Bundle()
                 args.putString("title", announcement.title)
                 args.putString("description", announcement.description)
                 args.putString("location", Cities.fromNumber(announcement.locationId.toInt()).toString())
-                args.putString("ownerName", "Giany")
 
-                findNavController().navigate(R.id.action_favoritesFragment_to_moreInfoFragment, args)
+                var owner: UserDb? = null
+
+                val getUsersListener = object : UsersListener {
+                    override fun onUsersReceived(users: List<User>?) {
+                        if (users != null) {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val userDao = UserDataBase.getInstance(context).userDao()
+                                for (user in users) {
+                                    withContext(Dispatchers.IO) {
+                                        userDao.insertUser(UserDb(user.firstname, user.lastname, user.email, user.id))
+                                    }
+
+                                    if (announcement.ownerId == user.id) {
+                                        owner = UserDb(user.firstname, user.lastname, user.email, user.id)
+                                        args.putString(
+                                            "ownerName",
+                                            (owner?.firstName ?: "") + (owner?.lastName ?: "")
+                                        )
+                                    }
+                                }
+
+                                // Navigation code after the block is ready
+                                withContext(Dispatchers.Main) {
+                                    findNavController().navigate(R.id.action_favoritesFragment_to_moreInfoFragment, args)
+                                }
+                            }
+                        } else {
+                            // Handle case when users list is null
+                        }
+                    }
+
+                    override fun onError(error: Throwable) {
+                        // Error handling logic
+                        println("An error occurred: ${error.message}")
+                    }
+                }
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    val userDao = UserDataBase.getInstance(context).userDao()
+                    owner = userDao.getUser(announcement.ownerId)
+
+                    if (owner == null) {
+                        userDao.deleteAllUsers()
+                        UsersManagement.getUsersWithListener(context, getUsersListener)
+                    } else {
+                        args.putString(
+                            "ownerName",
+                            (owner?.firstName ?: "") + " " + (owner?.lastName ?: "")
+                        )
+                        // Navigation code after the block is ready
+                        withContext(Dispatchers.Main) {
+                            findNavController().navigate(R.id.action_favoritesFragment_to_moreInfoFragment, args)
+                        }
+                    }
+                }
             }
         }
     }
