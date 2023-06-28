@@ -66,12 +66,12 @@ class SecondFragment : Fragment(), OnItemClickListener {
             runBlocking {
                 launch(Dispatchers.IO) {
 
-                    existentUserCheck(requireContext(), emailEditText.text.toString()) { found ->
+                    existentUserCheck(requireContext(), emailEditText.text.toString().replace(" ", "")) { found ->
                         if (!found) {
                             val userFuture: CompletableFuture<User> = createUser(
                                 context, User(
                                     id = "0",
-                                    email = emailEditText.text.toString(),
+                                    email = emailEditText.text.toString().replace(" ", ""),
                                     password = passwordEditText.text.toString(),
                                     firstname = firstnameEditText.text.toString(),
                                     lastname = lastnameEditText.text.toString()
@@ -79,7 +79,6 @@ class SecondFragment : Fragment(), OnItemClickListener {
                             )
 
                             userFuture.thenAccept {
-
                                 openMainActivity()
                             }.exceptionally { ex ->
                                 // Error handling logic
