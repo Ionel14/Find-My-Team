@@ -5,20 +5,23 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.room.Room
 import com.example.findmyteam.R
 import com.example.findmyteam.databinding.ActivityMainBinding
+import com.example.findmyteam.user.UserDataBase
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var db:UserDataBase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        db=Room.databaseBuilder(applicationContext,UserDataBase::class.java,"users.db").build()
         findNavController(R.id.nav_host_fragment_content_main)
 
 
