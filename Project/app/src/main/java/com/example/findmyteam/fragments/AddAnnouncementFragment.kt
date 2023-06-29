@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
-import com.example.findmyteam.data.UsersManagement
+import com.example.findmyteam.adapters.CategoriesAdapter
+import com.example.findmyteam.adapters.LocationsAdapter
+import com.example.findmyteam.models.Categories
+import com.example.findmyteam.models.Cities
 
 class AddAnnouncementFragment : Fragment() {
 
@@ -19,6 +21,8 @@ class AddAnnouncementFragment : Fragment() {
     lateinit var description:TextView
     lateinit var location:Spinner
     lateinit var category:Spinner
+    lateinit var categoriesAdapter: CategoriesAdapter
+    lateinit var locationsAdapter: LocationsAdapter
 
 
     override fun onCreateView(
@@ -41,7 +45,15 @@ class AddAnnouncementFragment : Fragment() {
         description = view.findViewById<TextView>(R.id.description_field)
         location = view.findViewById<Spinner>(R.id.location)
         category = view.findViewById<Spinner>(R.id.category)
-
+        val categoriesList: List<Categories> = enumValues<Categories>().toList()
+        categoriesAdapter= CategoriesAdapter(requireContext(),categoriesList)
+        category.adapter=categoriesAdapter
+        val cities:List<Cities> = enumValues<Cities>().toList()
+        locationsAdapter= LocationsAdapter(requireContext(),cities)
+        location.adapter=locationsAdapter
+        val defaultSelectionIndex=1
+        location.setSelection(defaultSelectionIndex)
+        category.setSelection(defaultSelectionIndex)
 //        val adapter = ArrayAdapter.createFromResource(
 //            this,
 //            R.array.locations,
