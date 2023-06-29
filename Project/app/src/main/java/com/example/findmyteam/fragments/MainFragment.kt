@@ -9,27 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonArrayRequest
 import com.example.findmyteam.R
 import com.example.findmyteam.adapters.AnnouncementsAdapter
 import com.example.findmyteam.data.AnnouncementsManagement
 import com.example.findmyteam.data.UsersManagement
-import com.example.findmyteam.helpers.*
+import com.example.findmyteam.helpers.OnItemClickListener
+import com.example.findmyteam.helpers.UsersListener
+import com.example.findmyteam.helpers.showInvalidDialog
 import com.example.findmyteam.models.Announcement
 import com.example.findmyteam.models.Cities
-import com.example.findmyteam.models.Cities.Companion.fromNumber
 import com.example.findmyteam.models.User
 import com.example.findmyteam.user.UserDataBase
 import com.example.findmyteam.user.UserDb
 import kotlinx.coroutines.*
-import org.json.JSONArray
-import org.json.JSONException
 import java.util.concurrent.CompletableFuture
 
 class MainFragment : Fragment(), OnItemClickListener {
-    var announcements = ArrayList<Announcement>()
+    private var announcements = ArrayList<Announcement>()
     private lateinit var adapter: AnnouncementsAdapter
 
     override fun onCreateView(
@@ -47,14 +43,14 @@ class MainFragment : Fragment(), OnItemClickListener {
         runBlocking {
             launch(Dispatchers.IO) {
 
-                val announcementsFuture: CompletableFuture<List<Announcement>> = AnnouncementsManagement.getAnnouncements(context);
+                val announcementsFuture: CompletableFuture<List<Announcement>> = AnnouncementsManagement.getAnnouncements(context)
 
                 announcementsFuture.thenAccept { pAnnouncements ->
                     if (pAnnouncements != null) {
                         announcements = pAnnouncements as ArrayList<Announcement>
                         setAdapter()
                     } else {
-                        showInvalidDialog( "No Announcements","", requireContext());
+                        showInvalidDialog( "No Announcements","", requireContext())
                     }
                 }.exceptionally { ex ->
                     // Error handling logic
@@ -113,7 +109,7 @@ class MainFragment : Fragment(), OnItemClickListener {
                 args.putString("description", announcement.description)
                 args.putString("location", Cities.fromNumber(announcement.locationId.toInt()).toString())
 
-                var owner: UserDb? = null
+                var owner: UserDb?
 
                 val getUsersListener = object : UsersListener {
                     override fun onUsersReceived(users: List<User>?) {
@@ -164,7 +160,7 @@ class MainFragment : Fragment(), OnItemClickListener {
                         )
                         // Navigation code after the block is ready
                         withContext(Dispatchers.Main) {
-                            findNavController().navigate(R.id.action_favoritesFragment_to_moreInfoFragment, args)
+                            findNavController().navigate(R.id.action_mainFragment_to_moreInfoFragment, args)
                         }
                     }
                 }

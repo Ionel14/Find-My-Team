@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
 import com.example.findmyteam.activities.AppMain
 import com.example.findmyteam.data.UsersManagement.createUser
 import com.example.findmyteam.helpers.OnItemClickListener
 import com.example.findmyteam.helpers.existentUserCheck
-import com.example.findmyteam.helpers.showInvalidDialog
 import com.example.findmyteam.helpers.signInChecks
 import com.example.findmyteam.models.User
 import com.google.android.material.textfield.TextInputEditText
@@ -94,6 +92,7 @@ class SecondFragment : Fragment(), OnItemClickListener {
 
     private fun openMainActivity()
     {
+        requireActivity().finish()
         val intent = Intent(requireContext(), AppMain::class.java)
         startActivity(intent)
     }

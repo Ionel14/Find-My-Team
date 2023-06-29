@@ -17,12 +17,12 @@ import com.example.findmyteam.models.Cities;
 
 import java.util.List;
 
-public class AnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyAnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<Announcement> announcements;
 
     private OnItemClickListener clickListener;
-    public AnnouncementsAdapter(List<Announcement> announcements){this.announcements = announcements;}
+    public MyAnnouncementsAdapter(List<Announcement> announcements){this.announcements = announcements;}
 
     @Override
     public int getItemViewType(int position) {
@@ -34,7 +34,7 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         AnnouncementViewHolder viewHolder;
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.announcement, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_announcement, parent, false);
 
         viewHolder = new AnnouncementViewHolder(view);
         return viewHolder;
@@ -64,7 +64,7 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView userNameTextView;
         TextView categoryTextView;
         TextView cityTextView;
-        androidx.appcompat.widget.AppCompatButton favoriteButton;
+        androidx.appcompat.widget.AppCompatButton deleteButton;
         androidx.appcompat.widget.AppCompatButton moreInfo;
 
         public AnnouncementViewHolder(@NonNull View itemView) {
@@ -74,10 +74,10 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<RecyclerView.View
             categoryTextView = itemView.findViewById(R.id.category);
             cityTextView = itemView.findViewById(R.id.city);
 
-            favoriteButton = itemView.findViewById(R.id.add_to_favorite);
+            deleteButton = itemView.findViewById(R.id.delete);
             moreInfo = itemView.findViewById(R.id.announcement_details);
 
-            favoriteButton.setOnClickListener(this);
+            deleteButton.setOnClickListener(this);
             moreInfo.setOnClickListener(this);
         }
 

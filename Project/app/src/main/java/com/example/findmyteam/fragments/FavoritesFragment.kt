@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,6 @@ import com.example.findmyteam.models.User
 import com.example.findmyteam.user.UserDataBase
 import com.example.findmyteam.user.UserDb
 import kotlinx.coroutines.*
-import java.util.concurrent.CompletableFuture
 
 class FavoritesFragment : Fragment(), OnItemClickListener {
 
@@ -89,7 +87,7 @@ class FavoritesFragment : Fragment(), OnItemClickListener {
                 args.putString("description", announcement.description)
                 args.putString("location", Cities.fromNumber(announcement.locationId.toInt()).toString())
 
-                var owner: UserDb? = null
+                var owner: UserDb?
 
                 val getUsersListener = object : UsersListener {
                     override fun onUsersReceived(users: List<User>?) {

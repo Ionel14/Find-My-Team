@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.findmyteam.R
-import com.example.findmyteam.models.Categories
 import com.example.findmyteam.models.Cities
 
 class LocationsAdapter(context: Context, list:List<Cities>):ArrayAdapter<Cities>(context,0,list) {

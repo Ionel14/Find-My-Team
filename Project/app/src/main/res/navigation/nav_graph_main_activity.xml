@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_accountFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_myAnnouncementsFragment"
+            app:destination="@id/myAnnouncementsFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -49,5 +52,14 @@
         <action
             android:id="@+id/action_addAnnouncementFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myAnnouncementsFragment"
+        android:name="com.example.findmyteam.fragments.MyAnnouncementsFragment"
+        android:label="fragment_my_announcements"
+        tools:layout="@layout/fragment_my_announcements" >
+        <action
+            android:id="@+id/action_myAnnouncementsFragment_to_moreInfoFragment"
+            app:destination="@id/moreInfoFragment" />
     </fragment>
 </navigation>

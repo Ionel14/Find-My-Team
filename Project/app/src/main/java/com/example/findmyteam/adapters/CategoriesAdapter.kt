@@ -1,7 +1,6 @@
 package com.example.findmyteam.adapters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.findmyteam.R
-import com.example.findmyteam.fragments.AddAnnouncementFragment
 import com.example.findmyteam.models.Categories
 
 class CategoriesAdapter(context:Context, list:List<Categories>):ArrayAdapter<Categories>(context,0,list) {
     private var layoutInflater=LayoutInflater.from(context)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-       val view: View=layoutInflater.inflate(R.layout.categories_item,null,false )
+       val view: View = layoutInflater.inflate(R.layout.categories_item,null,false )
         return view(view,position)
     }
 
@@ -27,10 +25,13 @@ class CategoriesAdapter(context:Context, list:List<Categories>):ArrayAdapter<Cat
         return view(cv!!,position)
     }
     private fun view(view: View, position: Int): View {
-val categories:Categories=getItem(position)?:return view
-    val categoryName=view.findViewById<TextView>(R.id.categoryName)
+
+        val categories:Categories=getItem(position)?:return view
+        val categoryName=view.findViewById<TextView>(R.id.categoryName)
         val categoryIcon=view.findViewById<ImageView>(R.id.categoryIcon)
+
         categoryName?.text=categories.name
+
         when (categories) {
             Categories.Football -> {
                 val drawable = ContextCompat.getDrawable(view.context, R.drawable.football_ball)
@@ -49,6 +50,7 @@ val categories:Categories=getItem(position)?:return view
                 categoryIcon?.setImageDrawable(drawable)
             }
         }
+
         return view
     }
 }

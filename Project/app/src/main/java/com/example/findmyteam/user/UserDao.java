@@ -15,5 +15,5 @@ public interface UserDao {
     @Insert
     void insertUser(UserDb user);
     @Query("Select *From user_table where webId Like :Id")
-    public UserDb getUser(String Id);
+    UserDb getUser(String Id);
 }

@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.findmyteam.R
 import com.example.findmyteam.activities.AppMain
-import com.example.findmyteam.activities.MainActivity
 import com.example.findmyteam.data.UsersManagement.findUser
 import com.example.findmyteam.helpers.OnItemClickListener
 import com.example.findmyteam.helpers.logInChecks
@@ -31,7 +30,7 @@ class FirstFragment : Fragment(), OnItemClickListener {
 
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
-    private var currentUser: User? = null;
+    private var currentUser: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,10 +55,6 @@ class FirstFragment : Fragment(), OnItemClickListener {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
 
     override fun onClick(view: View?, position: Int) {
 
@@ -70,11 +65,11 @@ class FirstFragment : Fragment(), OnItemClickListener {
             if (currentUser!!.password == passwordEditText.text.toString())
             {
                 //Go to next page
-                showInvalidDialog( "OK","Logged in", requireContext());
+                showInvalidDialog( "OK","Logged in", requireContext())
             }
             else
             {
-                showInvalidDialog( "Password is wrong","Please try again", requireContext());
+                showInvalidDialog( "Password is wrong","Please try again", requireContext())
             }
         }
         else{
@@ -93,12 +88,12 @@ class FirstFragment : Fragment(), OnItemClickListener {
                     }
                     else
                     {
-                        currentUser = user;
-                        showInvalidDialog( "Password is wrong","Please try again", requireContext());
+                        currentUser = user
+                        showInvalidDialog( "Password is wrong","Please try again", requireContext())
                     }
                 } else {
                     // User not found logic
-                    showInvalidDialog( "User not found","Please try again", requireContext());
+                    showInvalidDialog( "User not found","Please try again", requireContext())
                 }
             }.exceptionally { ex ->
                 // Error handling logic
@@ -112,6 +107,7 @@ class FirstFragment : Fragment(), OnItemClickListener {
 
     private fun openMainActivity()
     {
+        requireActivity().finish()
         val intent = Intent(requireContext(), AppMain::class.java)
         startActivity(intent)
     }

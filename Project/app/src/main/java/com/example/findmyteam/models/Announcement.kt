@@ -5,4 +5,4 @@ class Announcement(var id:String,
                    val categoryId: String,
                    val locationId: String,
                    val description: String,
-                   val ownerId: String) {}
+                   val ownerId: String)

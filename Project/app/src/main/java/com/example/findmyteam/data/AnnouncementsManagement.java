@@ -70,8 +70,8 @@ public class AnnouncementsManagement {
 
     }
 
-    public static CompletableFuture<Announcement> addAnnouncement(Context context, Announcement announcement) {
-        CompletableFuture<Announcement> completableFuture = new CompletableFuture<>();
+    public static CompletableFuture<Boolean> addAnnouncement(Context context, Announcement announcement) {
+        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
 
         VolleyConfigSingleton volleyConfigSingleton = VolleyConfigSingleton.getInstance(context);
         RequestQueue queue = volleyConfigSingleton.getRequestQueue();
@@ -79,7 +79,7 @@ public class AnnouncementsManagement {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("id", announcement.getId());
+            jsonBody.put("id", "");
             jsonBody.put("title", announcement.getTitle());
             jsonBody.put("categoryId", announcement.getCategoryId());
             jsonBody.put("description", announcement.getDescription());
@@ -98,10 +98,36 @@ public class AnnouncementsManagement {
                 response -> {
                     try {
                         announcement.setId(response.get("id").toString());
-                        completableFuture.complete(announcement);
+                        allAnnouncements.add(announcement);
+                        completableFuture.complete(true);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
+                },
+                completableFuture::completeExceptionally
+        );
+
+        queue.add(createAnnouncementRequest);
+
+        return completableFuture;
+    }
+
+    public static CompletableFuture<Boolean> deleteAnnouncement(Context context, Announcement announcement) {
+        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+
+        VolleyConfigSingleton volleyConfigSingleton = VolleyConfigSingleton.getInstance(context);
+        RequestQueue queue = volleyConfigSingleton.getRequestQueue();
+        String url = BASE_URL + ANNOUNCEMENTS_ENDPOINT + "/" + announcement.getId();
+
+        JSONObject jsonBody = new JSONObject();
+
+        JsonObjectRequest createAnnouncementRequest = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                jsonBody,
+                response -> {
+                    allAnnouncements.remove(announcement);
+                    completableFuture.complete(true);
                 },
                 completableFuture::completeExceptionally
         );
