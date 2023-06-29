@@ -15,7 +15,7 @@
         android:title="Search"
         android:icon="@drawable/search"/>
 
-    <item android:id="@+id/add"
+    <item android:id="@+id/addAnnouncementFragment"
         android:icon="@drawable/dark_plus"
         android:title="Add"/>
 </menu>

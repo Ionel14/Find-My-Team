@@ -41,4 +41,13 @@
             android:id="@+id/action_favoritesFragment_to_moreInfoFragment"
             app:destination="@id/moreInfoFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addAnnouncementFragment"
+        android:name="com.example.findmyteam.fragments.AddAnnouncementFragment"
+        android:label="fragment_add_announcement"
+        tools:layout="@layout/fragment_add_announcement" >
+        <action
+            android:id="@+id/action_addAnnouncementFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>
