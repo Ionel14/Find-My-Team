@@ -132,7 +132,7 @@ class MainFragment : Fragment(), OnItemClickListener {
 
                                 // Navigation code after the block is ready
                                 withContext(Dispatchers.Main) {
-                                    findNavController().navigate(R.id.action_favoritesFragment_to_moreInfoFragment, args)
+                                    findNavController().navigate(R.id.action_mainFragment_to_moreInfoFragment, args)
                                 }
                             }
                         } else {
